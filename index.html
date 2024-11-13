@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Begriffe Scrum - English</title>
+  <style>
+     body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      width: 100%;
+    }
+
+    .term-list-container {
+      width: 30%;
+      border-right: 2px solid #ddd;
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .content-display {
+      width: 70%;
+      padding: 20px;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    .term {
+      display: block;
+      padding: 10px;
+      margin-bottom: 5px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .term:hover {
+      background-color: #d1eaff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="term-list-container">
+      <h2>Begriffe</h2>
+      <div class="term-list">
+      </div>
+    </div>
+
+    <div class="content-display">
+      <h2>Beschreibung</h2>
+      <div id="content"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@latest/lib/marked.umd.min.js"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const terms = [
+        "accountability",
+        "affinity estimation",
+        "Agile Manifesto",
+        "burn-down chart",
+        "burn-up chart",
+        "bus factor",
+        "coach",
+        "collocated team",
+        "commitment",
+        "communication",
+        "continuous integration",
+        "Crystal",
+        "customer",
+        "daily scrum",
+        "definition of done (DoD)",
+        "Developers",
+        "DSDM",
+        "escaped defect",
+        "estimation",
+        "extreme programming (XP)",
+        "ideal days",
+        "ideal hours",
+        "increment",
+        "information radiator",
+        "Kanban",
+        "MoSCoW",
+        "niko-niko calendar",
+        "osmotic communication",
+        "pair programming",
+        "planning",
+        "planning poker",
+        "priority",
+        "product backlog (item)",
+        "product goal",
+        "Product Owner",
+        "refactoring",
+        "report",
+        "responsibility",
+        "scaling",
+        "Scrum",
+        "Scrum Master",
+        "Scrum team",
+        "splitting teams",
+        "sprint",
+        "sprint backlog (item)",
+        "sprint goal",
+        "sprint planning",
+        "sprint retrospective",
+        "sprint review",
+        "story point",
+        "test-driven development",
+        "timebox/timeboxing",
+        "triangulation",
+        "user story",
+        "velocity",
+        "virtual team",
+        "Waterfall",
+        "work-in-progress (WIP)"
+      ];
+
+      const termList = document.querySelector('.term-list');
+      terms.forEach(term => {
+        const termElement = document.createElement('span');
+        termElement.className = 'term';
+        termElement.textContent = term;
+        termElement.onclick = () => loadTermContent(term);
+        termList.appendChild(termElement);
+      });
+
+      function loadTermContent(term) {
+        console.log(`./${term}.md`)
+        fetch(`./${term}.md`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Failed to load content for ${term}`);
+            }
+            return response.text();
+          })
+          .then(content => {
+            document.getElementById('content').innerHTML = marked.parse(content);
+          })
+          .catch(error => {
+            document.getElementById('content').textContent = error.message;
+          });
+      }
+    });
+  </script>
+</body>
+</html>
