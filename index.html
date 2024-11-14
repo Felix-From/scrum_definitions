@@ -45,6 +45,11 @@
     .term:hover {
       background-color: #d1eaff;
     }
+
+    .active{
+      background-color: aqua;
+    }
+
   </style>
 </head>
 <body>
@@ -96,7 +101,6 @@
         "niko-niko calendar",
         "osmotic communication",
         "pair programming",
-        "planning",
         "planning poker",
         "priority",
         "product backlog (item)",
@@ -132,12 +136,17 @@
         const termElement = document.createElement('span');
         termElement.className = 'term';
         termElement.textContent = term;
-        termElement.onclick = () => loadTermContent(term);
+        termElement.onclick = () => loadTermContent(termElement, term);
         termList.appendChild(termElement);
       });
 
-      function loadTermContent(term) {
-        console.log(`./${term}.md`)
+      function loadTermContent(element, term) {
+        let elements = document.getElementsByClassName("active");
+
+        Array.from(elements).forEach(elemento => {
+          elemento.classList.remove('active');
+        });
+
         fetch(`./${term}.md`)
           .then(response => {
             if (!response.ok) {
@@ -147,6 +156,7 @@
           })
           .then(content => {
             document.getElementById('content').innerHTML = marked.parse(content);
+            element.classList.add('active');
           })
           .catch(error => {
             document.getElementById('content').textContent = error.message;
